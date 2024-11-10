@@ -19,15 +19,15 @@ public class Set {
   public void insert(int x) {
     for (int i = 0; i < a.size(); i++) {
       if (a.get(i) > x) {
-        a.add(i, x);
-        break;
+        a.add(i, x); // statement 1
+        return; // statement 2
       } else {
         if (a.get(i) == x) {
-          break;
+          return; // statement 3
         }
       }
     }
-    a.add(x);
+    a.add(x); // statement 4
   }
 
   public boolean member(int x) {
