@@ -33,45 +33,63 @@ public class Set {
   public boolean member(int x) {
     for (int i = 0; i < a.size(); i++) {
       if (a.get(i) > x) {
-        return false;
+        return false; // statement 1
       } else {
         if (a.get(i) == x) {
-          return true;
+          return true; // statement 2
         }
       }
     }
-    return false;
+    return false; // statement 3
   }
 
   public void intersect(Set s) {
-    for (int i = 0, j = 0; i < a.size() && j < s.a.size();) {
+    if (a.size() == 0 || s.a.size() == 0) {
+      a = new ArrayList<Integer>();
+      return;
+    }
+
+    ArrayList<Integer> intersection = new ArrayList<>();
+    int i = 0, j = 0;
+
+    while (i < a.size() && j < s.a.size()) {
       if (a.get(i).equals(s.a.get(j))) {
+        intersection.add(a.get(i));
         i++;
         j++;
+      } else if (a.get(i) < s.a.get(j)) {
+        i++;
       } else {
-        if (a.get(i) < s.a.get(j)) {
-          a.remove(i);
-          i++;
-        } else {
-          j++;
-        }
+        j++;
       }
     }
+
+    // Update `a` to contain only the intersection results
+    a = intersection;
   }
 
   // Try with:
   // (a, b) -> a + b;
   // (a, b) -> a - b;
   public boolean distinctClosed(IntBinaryOperator f) {
-    int vi, vj;
+    int vi, vj; // statement 1
     for (int i = 0; i < a.size(); i++) {
       for (int j = i; j < a.size(); j++) {
-        vi = a.get(i);
-        vj = a.get(j);
-        if (!(member(f.applyAsInt(vi, vj)) || vi == vj))
-          return false;
+        vi = a.get(i); // statement 2
+        vj = a.get(j); // statement 3
+        // if (!(member(f.applyAsInt(vi, vj)) || vi == vj))
+        // return false; // statement 4
+
+        if (vi == vj) {
+          continue;
+        } else {
+          if (!(member(f.applyAsInt(vi, vj)))) {
+            return false;
+          }
+        }
       }
+
     }
-    return true;
+    return true; // statement 5
   }
 }
