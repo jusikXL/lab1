@@ -13,27 +13,18 @@ public class MemberTest {
   }
 
   @Test
-  public void testMemberExistingElement() {
-    set.insert(5);
-    assertTrue(set.member(5)); // statement 2
-  }
+  public void testMember() {
+    // don't go into for loop
+    assertFalse(set.member(123), "should be false for empty set"); // statement 3
 
-  @Test
-  public void testMemberSmallerElement() {
     set.insert(5);
-    assertFalse(set.member(3)); // statement 1
-  }
+    // go into for loop and leave it
+    assertFalse(set.member(10), "should return false for larger element"); // statement 3
 
-  @Test
-  public void testMemberLargerElement() {
-    set.insert(5);
-    assertFalse(set.member(10)); // statement 3
-  }
+    // go into for loop and if
+    assertFalse(set.member(3), "should return false for smaller element"); // statement 1
 
-  @Test
-  public void testMemberNonExistentMiddleElement() {
-    set.insert(3);
-    set.insert(7);
-    assertFalse(set.member(5)); // statement 1
+    // go into for loop and else if
+    assertTrue(set.member(5), "should be true for existing element"); // statement 2
   }
 }
