@@ -21,6 +21,7 @@ public class Set {
       if (a.get(i) > x) {
         a.add(i, x); // statement 1
         return; // statement 2
+        // 123
       } else {
         if (a.get(i) == x) {
           return; // statement 3
@@ -74,21 +75,13 @@ public class Set {
   public boolean distinctClosed(IntBinaryOperator f) {
     int vi, vj; // statement 1
     for (int i = 0; i < a.size(); i++) {
-      for (int j = i; j < a.size(); j++) {
+      for (int j = i + 1 /* consider only distinct pairs */; j < a.size(); j++) {
         vi = a.get(i); // statement 2
         vj = a.get(j); // statement 3
-        // if (!(member(f.applyAsInt(vi, vj)) || vi == vj))
-        // return false; // statement 4
-
-        if (vi == vj) {
-          continue;
-        } else {
-          if (!(member(f.applyAsInt(vi, vj)))) {
-            return false;
-          }
+        if (!(member(f.applyAsInt(vi, vj)))) {
+          return false; // statement 4
         }
       }
-
     }
     return true; // statement 5
   }
