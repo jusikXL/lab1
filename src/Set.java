@@ -21,7 +21,6 @@ public class Set {
       if (a.get(i) > x) {
         a.add(i, x); // statement 1
         return; // statement 2
-        // 123
       } else {
         if (a.get(i) == x) {
           return; // statement 3
@@ -46,27 +45,25 @@ public class Set {
 
   public void intersect(Set s) {
     if (a.size() == 0 || s.a.size() == 0) {
-      a = new ArrayList<Integer>();
+      a = new ArrayList<Integer>(); // statement 1
       return;
     }
 
-    ArrayList<Integer> intersection = new ArrayList<>();
-    int i = 0, j = 0;
+    ArrayList<Integer> intersection = new ArrayList<>(); // statement 2
 
-    while (i < a.size() && j < s.a.size()) {
+    for (int i = 0, j = 0; i < a.size() && j < s.a.size();) {
       if (a.get(i).equals(s.a.get(j))) {
-        intersection.add(a.get(i));
+        intersection.add(a.get(i)); // statement 3
         i++;
         j++;
       } else if (a.get(i) < s.a.get(j)) {
-        i++;
+        i++; // statement 4
       } else {
-        j++;
+        j++; // statement 5
       }
     }
 
-    // Update `a` to contain only the intersection results
-    a = intersection;
+    a = intersection; // statement 6
   }
 
   // Try with:
