@@ -1,1 +1,0 @@
-1. ask whether we need to assert intermidiately
