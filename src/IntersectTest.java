@@ -1,7 +1,5 @@
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-import java.util.Arrays;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +28,6 @@ public class IntersectTest {
   public void testIntersect() {
     // more elements
     set1.intersect(set2); // statement 2, 3, 4, 5, 6
-    System.out.println(Arrays.toString(set1.toArray()));
     assertArrayEquals(new int[] { 1 }, set1.toArray());
 
     // with empty set
