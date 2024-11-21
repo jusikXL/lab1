@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 
 @DisplayName("Next Incomplete")
 public class NextIncompleteTest {
-    private static final int SIZE = 5; // Number of hours in the schedule
+    private static final int SIZE = 8; // Number of hours in the schedule
     private static final int REQUIRED_NUMBER = 10; // Employees required per hour
     private WorkSchedule schedule; // Schedule instance for testing
 
@@ -59,9 +59,9 @@ public class NextIncompleteTest {
     }
 
 
-    @ParameterizedTest(name = "Single {0} Incomplete: {2} is next incomplete for {1}.")
+    @ParameterizedTest(name = "Single {0} Incomplete: assert next incomplete for {1}.")
     @MethodSource
-    public void testSingleIncompleteHour(int emptyHour, int currentTime, int expectedNextIncomplete) {
+    public void testSingleIncompleteHour(int emptyHour, int currentTime) {
         schedule = new WorkSchedule(SIZE);
 
         schedule.setRequiredNumber(REQUIRED_NUMBER, 0, SIZE - 1);
@@ -73,7 +73,7 @@ public class NextIncompleteTest {
 
         ///////////////////////////////////////////////////////////////
 
-        assertEquals(expectedNextIncomplete, schedule.nextIncomplete(currentTime)); 
+        assertEquals(currentTime <= emptyHour ? emptyHour : -1, schedule.nextIncomplete(currentTime)); 
 
         // Schedule was not changed
         for (int i = 0; i < SIZE; i++) {
@@ -88,25 +88,103 @@ public class NextIncompleteTest {
         }
     }
 
-    // private static int expectedNextIncomplete(int emptyHour, int currentTime) {
-    //     return currentTime <= emptyHour ? emptyHour : -1;
-    // }
-
     private static Stream<Arguments> testSingleIncompleteHour() {
         return Stream.of(
-            // emptyHour, currentTime, expectedNextIncomplete
-            Arguments.of(0, 0, 0),
-            Arguments.of(0, SIZE / 2, -1),
-            Arguments.of(0, SIZE - 1, -1),
+            // emptyHour, currentTime
+            
+            Arguments.of(0, 0),
+            Arguments.of(0, SIZE / 2),
+            Arguments.of(0, SIZE - 1),
 
-            Arguments.of(SIZE / 2, 0, SIZE / 2),
-            Arguments.of(SIZE / 2, SIZE / 2 - 1, SIZE / 2),
-            Arguments.of(SIZE / 2, SIZE / 2, SIZE / 2),
-            Arguments.of(SIZE / 2,  SIZE - 1, -1),
+            Arguments.of(SIZE / 2, 0),
+            Arguments.of(SIZE / 2, SIZE / 2 - 1),
+            Arguments.of(SIZE / 2,  SIZE - 1),
 
-            Arguments.of(SIZE - 1, 0, SIZE - 1),
-            Arguments.of(SIZE - 1, SIZE / 2, SIZE - 1),
-            Arguments.of(SIZE - 1, SIZE - 1, SIZE - 1)
+            Arguments.of(SIZE - 1, 0),
+            Arguments.of(SIZE - 1, SIZE / 2),
+            Arguments.of(SIZE - 1, SIZE - 1)
+        );
+    }
+
+    private static int nextIncomplete(int firstEmptyHour, int secondEmptyHour, int currentTime) {
+        if(currentTime <= firstEmptyHour) {
+            return firstEmptyHour;
+        } else if (currentTime <= secondEmptyHour) {
+            return secondEmptyHour;
+        } else {
+            return -1;
+        }
+    }
+
+    @ParameterizedTest(name = "Two {0}, {1} Incomplete: assert next incomplete for {2}.")
+    @MethodSource
+    public void testTwoIncompleteTimeSlots(int firstEmptyHour, int secondEmptyHour, int currentTime) {
+        schedule = new WorkSchedule(SIZE);
+
+        schedule.setRequiredNumber(REQUIRED_NUMBER, 0, SIZE - 1);
+
+        for (int i = 0; i < REQUIRED_NUMBER; i++) {
+            String employee = String.valueOf(i);
+            schedule.addWorkingPeriod(employee, 0, firstEmptyHour - 1);
+            schedule.addWorkingPeriod(employee, firstEmptyHour + 1, secondEmptyHour - 1); // verify
+            schedule.addWorkingPeriod(employee, secondEmptyHour + 1, SIZE - 1);
+        }
+
+        for (int i = 0; i < SIZE; i++) {
+            WorkSchedule.Hour hour = schedule.readSchedule(i);
+            
+            System.out.println(i + " " + hour.requiredNumber + " " + hour.workingEmployees.length);
+        }
+
+        ///////////////////////////////////////////////////////////////
+     
+        assertEquals(nextIncomplete(firstEmptyHour, secondEmptyHour, currentTime), schedule.nextIncomplete(currentTime)); 
+
+        // Schedule should be unchanged
+        for (int i = 0; i < SIZE; i++) {
+            WorkSchedule.Hour hour = schedule.readSchedule(i);
+            if (i == firstEmptyHour || i == secondEmptyHour) {
+                assertEquals(REQUIRED_NUMBER, hour.requiredNumber);
+                assertEquals(0, hour.workingEmployees.length);
+            } else {
+                assertEquals(REQUIRED_NUMBER, hour.requiredNumber);
+                assertEquals(REQUIRED_NUMBER, hour.workingEmployees.length);
+            }
+        }
+    }
+
+    private static Stream<Arguments> testTwoIncompleteTimeSlots() {
+        return Stream.of(
+            // firstEmptyHour, secondEmptyHour, currentTime
+            
+            // start and end
+            Arguments.of(0, SIZE - 1, 0),       
+            Arguments.of(0, SIZE - 1, SIZE / 2),
+            Arguments.of(0, SIZE - 1, SIZE - 1),
+
+            // middle and end
+            Arguments.of(SIZE / 2, SIZE - 1, 0), 
+            Arguments.of(SIZE / 2, SIZE - 1, SIZE / 2 - 1),
+            Arguments.of(SIZE / 2, SIZE - 1, SIZE / 2),
+            Arguments.of(SIZE / 2, SIZE - 1, SIZE / 2 + 1),
+            Arguments.of(SIZE / 2, SIZE - 1, SIZE - 1),
+
+            // start and middle
+            Arguments.of(0, SIZE / 2, 0),       
+            Arguments.of(0, SIZE / 2, SIZE / 2 - 1),
+            Arguments.of(0, SIZE / 2, SIZE / 2),
+            Arguments.of(0, SIZE / 2, SIZE / 2 + 1),
+            Arguments.of(0, SIZE / 2, SIZE - 1),
+
+
+            // two together in the middle
+            Arguments.of(SIZE / 2 - 1, SIZE / 2, 0),       
+            Arguments.of(SIZE / 2 - 1, SIZE / 2, SIZE / 2 - 2),
+            Arguments.of(SIZE / 2 - 1, SIZE / 2, SIZE / 2 - 1),
+            Arguments.of(SIZE / 2 - 1, SIZE / 2, SIZE / 2 + 1),
+            Arguments.of(SIZE / 2 - 1, SIZE / 2, SIZE - 1)
+
+            // 
         );
     }
     
