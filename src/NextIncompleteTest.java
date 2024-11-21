@@ -88,25 +88,25 @@ public class NextIncompleteTest {
         }
     }
 
-    private static int expectedNextIncomplete(int emptyHour, int currentTime) {
-        return currentTime <= emptyHour ? emptyHour : -1;
-    }
+    // private static int expectedNextIncomplete(int emptyHour, int currentTime) {
+    //     return currentTime <= emptyHour ? emptyHour : -1;
+    // }
 
     private static Stream<Arguments> testSingleIncompleteHour() {
         return Stream.of(
             // emptyHour, currentTime, expectedNextIncomplete
-            
-            Arguments.of(0, 0, expectedNextIncomplete(0, 0)),
-            Arguments.of(0, SIZE / 2, expectedNextIncomplete(0, SIZE / 2)),
-            Arguments.of(0, SIZE - 1, expectedNextIncomplete(0, SIZE - 1)),
+            Arguments.of(0, 0, 0),
+            Arguments.of(0, SIZE / 2, -1),
+            Arguments.of(0, SIZE - 1, -1),
 
-            Arguments.of(SIZE / 2, 0, expectedNextIncomplete(SIZE / 2, 0)),
-            Arguments.of(SIZE / 2, SIZE / 2 - 1, expectedNextIncomplete(SIZE / 2, SIZE / 2 - 1)),
-            Arguments.of(SIZE / 2,  SIZE - 1, expectedNextIncomplete(SIZE / 2,  SIZE - 1)),
+            Arguments.of(SIZE / 2, 0, SIZE / 2),
+            Arguments.of(SIZE / 2, SIZE / 2 - 1, SIZE / 2),
+            Arguments.of(SIZE / 2, SIZE / 2, SIZE / 2),
+            Arguments.of(SIZE / 2,  SIZE - 1, -1),
 
-            Arguments.of(SIZE - 1, 0, expectedNextIncomplete(SIZE - 1, 0)),
-            Arguments.of(SIZE - 1, SIZE / 2, expectedNextIncomplete(SIZE - 1, SIZE / 2)),
-            Arguments.of(SIZE - 1, SIZE - 1, expectedNextIncomplete(SIZE - 1, SIZE - 1))
+            Arguments.of(SIZE - 1, 0, SIZE - 1),
+            Arguments.of(SIZE - 1, SIZE / 2, SIZE - 1),
+            Arguments.of(SIZE - 1, SIZE - 1, SIZE - 1)
         );
     }
     
