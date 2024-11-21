@@ -196,8 +196,8 @@ class NextIncompleteTest {
                 Arguments.of(SIZE / 2 - 1, SIZE / 2, 0),       
                 Arguments.of(SIZE / 2 - 1, SIZE / 2, SIZE / 2 - 2),
                 Arguments.of(SIZE / 2 - 1, SIZE / 2, SIZE / 2 - 1),
+                Arguments.of(SIZE / 2 - 1, SIZE / 2, SIZE / 2),
                 Arguments.of(SIZE / 2 - 1, SIZE / 2, SIZE / 2 + 1),
-                Arguments.of(SIZE / 2 - 1, SIZE / 2, SIZE / 2 + 2),
                 Arguments.of(SIZE / 2 - 1, SIZE / 2, SIZE - 1)
             );
         }
