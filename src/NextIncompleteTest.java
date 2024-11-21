@@ -33,7 +33,7 @@ class NextIncompleteTest {
 
         @ParameterizedTest(name = "Fully Complete: -1 is next incomplete for {0}.")
         @ValueSource(ints = { 0, SIZE / 2, SIZE - 1 })
-        void testFullyCompleteSchedule(int currentTime) {
+        void test(int currentTime) {
             assertEquals(-1, schedule.nextIncomplete(currentTime));             
         }
 
@@ -58,7 +58,7 @@ class NextIncompleteTest {
 
         @ParameterizedTest(name = "Fully Incomplete: {0} is next incomplete for {0}.")
         @ValueSource(ints = { 0, SIZE / 2, SIZE - 1 })
-        public void testFullyIncompleteSchedule(int currentTime) {
+        public void test(int currentTime) {
             assertEquals(currentTime, schedule.nextIncomplete(currentTime));
         }
 
@@ -83,7 +83,7 @@ class NextIncompleteTest {
 
         @ParameterizedTest(name = "Single {0} Incomplete: assert next incomplete for {1}.")
         @MethodSource
-        public void testSingleIncompleteHour(int emptyHour, int currentTime) {
+        public void test(int emptyHour, int currentTime) {
             for (int i = 0; i < REQUIRED_NUMBER; i++) {
                 String employee = String.valueOf(i);
                 schedule.addWorkingPeriod(employee, 0, emptyHour - 1);
@@ -107,7 +107,7 @@ class NextIncompleteTest {
             }
         }
 
-        Stream<Arguments> testSingleIncompleteHour() {
+        Stream<Arguments> test() {
             return Stream.of(
                 // emptyHour, currentTime
                 
@@ -139,7 +139,7 @@ class NextIncompleteTest {
 
         @ParameterizedTest(name = "Two {0}, {1} Incomplete: assert next incomplete for {2}.")
         @MethodSource
-        public void testTwoIncompleteTimeSlots(int firstEmptyHour, int secondEmptyHour, int currentTime) {
+        public void test(int firstEmptyHour, int secondEmptyHour, int currentTime) {
             schedule = new WorkSchedule(SIZE);
     
             schedule.setRequiredNumber(REQUIRED_NUMBER, 0, SIZE - 1);
@@ -168,7 +168,7 @@ class NextIncompleteTest {
             }
         }
     
-        Stream<Arguments> testTwoIncompleteTimeSlots() {
+        Stream<Arguments> test() {
             return Stream.of(
                 // firstEmptyHour, secondEmptyHour, currentTime
                 
