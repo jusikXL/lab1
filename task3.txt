@@ -292,7 +292,7 @@ laterDayInYear = 62
 aMonth = 3
 daysBetween = 0
 
-SUMARY ALL LOCAL VARIABLES INSIDE MAIN:
+SUMMARY OF ALL LOCAL VARIABLES INSIDE MAIN:
 
 - someMonth (some month from input)
 - someDay (some day from input)
@@ -557,23 +557,14 @@ Step completed: "thread=main", Dates.main(), line=35 bci=44
 VARIABLES:
 
 Method arguments:
-
 args = instance of java.lang.String[4] (id=452)
-
 Local variables:
-
 someMonth = 12
-
 someDay = 31
-
 laterMonth = 1
-
 laterDay = 1
-
 someDayInYear = 93
-
 laterDayInYear = 0
-
 aMonth = 3
 
 NEXT:
