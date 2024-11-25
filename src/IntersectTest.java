@@ -40,7 +40,7 @@ public class IntersectTest {
     assertArrayEquals(new int[] {}, set1.toArray());
 
     // empty set
-    new Set().intersect(set1); // statement 1
+    new Set().intersect(set3); // statement 1
     assertArrayEquals(new int[] {}, set1.toArray());
   }
 }
