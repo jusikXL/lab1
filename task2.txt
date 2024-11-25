@@ -1,0 +1,195 @@
+# Task 2 Black-box Testing
+
+## **`setRequiredNumber`**
+
+`public void setRequiredNumber(int nemployee, int starttime, int endtime) { ... }`
+
+```
+sets the number of required working employees to nemployee for all hours in the interval starttime to endtime.
+
+requires:
+  0 <= nemployee and  0 <= starttime and  0 <=endtime
+ensures:
+  if starttime > endtime then
+    the schedule is unchanged
+  otherwise
+      for each Hour between starttime and endtime (inclusive)
+          if the length of workingEmployees is greater than nemployee
+          then
+             requiredNumber is set to nemployee and workingEmployees
+             keeps a number of employees equal to nemployee, discarding
+             the rest
+          otherwise
+             requiredNumber is set to nemployee and workingEmployees is unchanged
+      and the rest of the schedule is unchanged
+```
+
+### Partitions
+
+- **Number of Employees (nemployee):**
+  - **Block #1:** nemployee = REQUIRED_NUMBER
+  - **Block #2:** nemployee < REQUIRED_NUMBER  (REQUIRED_NUMBER  / 2)
+  - **Block #3:** nemployee > REQUIRED_NUMBER (REQUIRED_NUMBER \* 2)
+- **Relation of Start Time to Size:**
+  - **Block #1:** start ≥ SIZE
+  - **Block #2:** start < SIZE
+    - **Relation of End Time to Size:**
+      - **Block #1:** end ≥ SIZE
+      - **Block #2:** end < SIZE
+        - **Relation of Start Time to End Time:**
+          - **Block #1:** start > end
+          - **Block #2:** start ≤ end
+            - **Block #1:** start = 1, end = SIZE - 2 (inside)
+            - **Block #2:** start = 0, end = SIZE / 2 (start to middle)
+            - **Block #3:** start = SIZE / 2, end = SIZE - 1 (middle to end)
+            - **Block #4:** start = 0, end = SIZE - 1 (start to end)
+            - **Block #5:** start = end = SIZE / 2 (start equal to end)
+
+### Constants used
+
+| REQUIRED
+(required number of empoyees for each time slot) | SIZE
+(total number of time slots in the schedule) |
+| --- | --- |
+| 10 | 8 |
+
+### Results
+
+| nemployee | Start Time | End Time | meaning         | result | expected                    | actual                      |
+| --------- | ---------- | -------- | --------------- | ------ | --------------------------- | --------------------------- |
+| 10        | 7          | 4        | start > END     | PASS   | no changes                  | no changes                  |
+| 10        | 8          | 9        | start ≥ SIZE    | PASS   | no changes                  | no changes                  |
+| 10        | 4          | 8        | end ≥ SIZE      | PASS   | no changes                  | no changes                  |
+| 10        | 1          | 6        | inside          | PASS   | no changes                  | no changes                  |
+| 10        | 0          | 4        | start to middle | PASS   | no changes                  | no changes                  |
+| 10        | 4          | 7        | middle to end   | PASS   | no changes                  | no changes                  |
+| 10        | 0          | 7        | start to end    | PASS   | no changes                  | no changes                  |
+| 10        | 4          | 4        | start = end     | PASS   | no changes                  | no changes                  |
+|           |            |          |                 |        |                             |                             |
+| 5         | 7          | 4        | start > END     | PASS   | no changes                  | no changes                  |
+| 5         | 8          | 9        | start ≥ SIZE    | PASS   | no changes                  | no changes                  |
+| 5         | 4          | 8        | end ≥ SIZE      | FAIL   | no changes                  | required 10 → 5             |
+| 5         | 1          | 6        | inside          | FAIL   | required = 5; working = 5   | required = 5; working = 4   |
+| 5         | 0          | 4        | start to middle | FAIL   | required = 5; working = 5   | required = 5; working = 4   |
+| 5         | 4          | 7        | middle to end   | FAIL   | required = 5; working = 5   | required = 5; working = 4   |
+| 5         | 0          | 7        | start to end    | FAIL   | required = 5; working = 5   | required = 5; working = 4   |
+| 5         | 4          | 4        | start = end     | FAIL   | required = 5; working = 5   | required = 5; working = 4   |
+|           |            |          |                 |        |                             |                             |
+| 20        | 7          | 4        | start > END     | PASS   | no changes                  | no changes                  |
+| 20        | 8          | 9        | start ≥ SIZE    | PASS   | no changes                  | no changes                  |
+| 20        | 4          | 8        | end ≥ SIZE      | FAIL   | no changes                  | required 10 → 20            |
+| 20        | 1          | 6        | inside          | PASS   | required = 20; working = 10 | required = 20; working = 10 |
+| 20        | 0          | 4        | start to middle | PASS   | required = 20; working = 10 | required = 20; working = 10 |
+| 20        | 4          | 7        | middle to end   | PASS   | required = 20; working = 10 | required = 20; working = 10 |
+| 20        | 0          | 7        | start to end    | PASS   | required = 20; working = 10 | required = 20; working = 10 |
+| 20        | 4          | 4        | start = end     | PASS   | required = 20; working = 10 | required = 20; working = 10 |
+
+### Bugs found
+
+1. If `end ≥ SIZE`, an exception is thrown but changes to requiredNumber are made without aborting them.
+2. If the length of workingEmployees is greater than nemployee, workingEmployees
+   keeps a number of employees NOT equal to nemployee, discarding
+   the rest INCORRECTLY (1 less for our test case i.e. 4 instead of 5)
+
+## `nextIncomplete`
+
+`public int nextIncomplete(int currenttime) { ... }`
+
+```
+returns the closest time starting from currenttime for which the required amount of employees has not yet been scheduled.
+
+requires:
+  currenttime >= 0 and currenttime < size
+ensures: if there is an hour in the interval currenttime to size - 1 such that
+     the length of workingEmployees is less that requiredNumber
+then
+    returns the time of the hour closest to currenttime such that
+    the length of workingEmployees is less that requiredNumber
+otherwise
+    returns -1
+and in either case the schedule is unchanged
+```
+
+### Partitions
+
+- **Schedule Completeness**
+  - **Block #1:** Fully complete (all time slots are have working = required employees)
+  - **Block #2:** Fully incomplete (all times slots have 0 of required employees)
+  - **Block #3:** Single incomplete (single time slot has working < required)
+    - **Incomplete Time Slot (empty hour)**
+      - **Block #1:** empty hour = 0 (first)
+      - **Block #2:** empty hour = SIZE / 2 (middle)
+      - **Block #3:** empty hour = SIZE - 1 (last)
+  - **Block #4:** Two incomplete (two time slots have working < required)
+    - Relation of empty hour 1 to empty hour 2
+      - **Block #1:** empty hour 1 = 0; empty hour 2 = SIZE - 1 (first and last)
+      - **Block #2:** empty hour 1 = SIZE / 2; empty hour 2 = SIZE - 1 (middle and last)
+      - **Block #3:** empty hour 1 = 0; empty hour 2 = SIZE / 2 (first and middle)
+      - **Block #4:** empty hour 1 = SIZE / 2 - 1; empty hour 2 = SIZE / 2 (two middle)
+- **Relation of Incomplete Time Slot (empty hour) to Current Time:**
+  - **Block #1:** currentTime = 0 (first)
+  - **Block #2:** currentTime < empty hour BUT ≠ 0 (less)
+  - **Block #3:** currentTime = empty hour (equal)
+  - **Block #4:** currentTime > empty hour BUT ≠ SIZE - 1 (greater)
+  - **Block #5:** currentTime = SIZE - 1 (last)
+
+### Constants used
+
+| REQUIRED
+(required number of empoyees for each time slot) | SIZE
+(total number of time slots in the schedule) |
+| --- | --- |
+| 10 | 8 |
+
+### Results
+
+| completeness      | first empty hour | second empty hour | current time | result | expected | actual |
+| ----------------- | ---------------- | ----------------- | ------------ | ------ | -------- | ------ |
+| fully complete    |                  |                   | 0            | PASS   | -1       | -1     |
+| fully complete    |                  |                   | 4            | PASS   | -1       | -1     |
+| fully complete    |                  |                   | 7            | PASS   | -1       | -1     |
+|                   |                  |                   |              |        |          |        |
+| fully incomplete  |                  |                   | 0            | FAIL   | 0        | 7      |
+| fully incomplete  |                  |                   | 4            | FAIL   | 4        | 7      |
+| fully incomplete  |                  |                   | 7            | PASS   | 7        | 7      |
+|                   |                  |                   |              |        |          |        |
+| single incomplete | 0                |                   | 0            | PASS   | 0        | 0      |
+| single incomplete | 0                |                   | 4            | PASS   | -1       | -1     |
+| single incomplete | 0                |                   | 7            | PASS   | -1       | -1     |
+|                   |                  |                   |              |        |          |        |
+| single incomplete | 4                |                   | 0            | PASS   | 4        | 4      |
+| single incomplete | 4                |                   | 3            | PASS   | 4        | 4      |
+| single incomplete | 4                |                   | 4            | PASS   | 4        | 4      |
+| single incomplete | 4                |                   | 5            | PASS   | -1       | -1     |
+| single incomplete | 4                |                   | 7            | PASS   | -1       | -1     |
+|                   |                  |                   |              |        |          |        |
+| single incomplete | 7                |                   | 0            | PASS   | 7        | 7      |
+| single incomplete | 7                |                   | 4            | PASS   | 7        | 7      |
+| single incomplete | 7                |                   | 7            | PASS   | 7        | 7      |
+|                   |                  |                   |              |        |          |        |
+| two incomplete    | 0                | 7                 | 0            | FAIL   | 0        | 7      |
+| two incomplete    | 0                | 7                 | 4            | PASS   | 7        | 7      |
+| two incomplete    | 0                | 7                 | 7            | PASS   | 7        | 7      |
+|                   |                  |                   |              |        |          |        |
+| two incomplete    | 4                | 7                 | 0            | FAIL   | 4        | 7      |
+| two incomplete    | 4                | 7                 | 3            | FAIL   | 4        | 7      |
+| two incomplete    | 4                | 7                 | 4            | FAIL   | 4        | 7      |
+| two incomplete    | 4                | 7                 | 5            | PASS   | 7        | 7      |
+| two incomplete    | 4                | 7                 | 7            | PASS   | 7        | 7      |
+|                   |                  |                   |              |        |          |        |
+| two incomplete    | 0                | 4                 | 0            | FAIL   | 0        | 4      |
+| two incomplete    | 0                | 4                 | 3            | PASS   | 4        | 4      |
+| two incomplete    | 0                | 4                 | 4            | PASS   | 4        | 4      |
+| two incomplete    | 0                | 4                 | 5            | PASS   | -1       | -1     |
+| two incomplete    | 0                | 4                 | 7            | PASS   | -1       | -1     |
+|                   |                  |                   |              |        |          |        |
+| two incomplete    | 3                | 4                 | 0            | FAIL   | 3        | 4      |
+| two incomplete    | 3                | 4                 | 2            | FAIL   | 3        | 4      |
+| two incomplete    | 3                | 4                 | 3            | FAIL   | 3        | 4      |
+| two incomplete    | 3                | 4                 | 4            | PASS   | 4        | 4      |
+| two incomplete    | 3                | 4                 | 5            | PASS   | -1       | -1     |
+| two incomplete    | 3                | 4                 | 7            | PASS   | -1       | -1     |
+
+### Bugs found
+
+It returns not the next but the last incomplete.

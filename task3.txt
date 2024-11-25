@@ -1,0 +1,993 @@
+# Task 3 Debugging
+
+## **3.1 Task 1: Probing around**
+
+| Input     | Result | Expected output | Actual output |
+| --------- | ------ | --------------- | ------------- |
+| 3 31 4 1  | FAIL   | 1               | -92           |
+| 12 31 1 1 | FAIL   | 1               | -398          |
+| 11 30 1 1 | FAIL   | 32              | -367          |
+
+After trying several additional test-cases even basic cases gave negative test-results
+
+## **3.2 Task 2: Put on debugging lens**
+
+### **Finding the Local Variables in main using Step and Locals:**
+
+STEP:
+
+"thread=main", Dates.main(), line=26 bci=14
+
+LOCAL VARIABLES:
+
+someMonth = 1
+someDay = 2
+
+STEP:
+
+"thread=main", Dates.main(), line=27 bci=21
+
+LOCAL VARIABLES:
+someMonth = 1
+someDay = 2
+laterMonth = 3
+
+STEP:
+
+"thread=main", Dates.main(), line=31 bci=29
+
+LOCAL VARIABLES:
+someMonth = 1
+someDay = 2
+laterMonth = 3
+laterDay = 4
+
+STEP:
+
+"thread=main", Dates.main(), line=32 bci=32
+
+LOCAL VARIABLES:
+someMonth = 1
+someDay = 2
+laterMonth = 3
+laterDay = 4
+someDayInYear = 0
+
+STEP:
+
+"thread=main", Dates.main(), line=34 bci=35
+
+LOCAL VARIABLES:
+someMonth = 1
+someDay = 2
+laterMonth = 3
+laterDay = 4
+someDayInYear = 0
+laterDayInYear = 0
+
+STEP:
+
+"thread=main", Dates.main(), line=35 bci=44
+
+LOCAL VARIABLES:
+someMonth = 1
+someDay = 2
+laterMonth = 3
+laterDay = 4
+someDayInYear = 0
+laterDayInYear = 0
+aMonth = 0
+
+STEP:
+
+"thread=main", Dates.daysInMonth(), line=13 bci=0
+
+VARIABLES:
+Method arguments:
+month = 0
+Local variables: -
+
+STEP:
+
+"thread=main", Dates.daysInMonth(), line=16 bci=27
+
+VARIABLES:
+Method arguments:
+month = 0
+Local variables:-
+
+STEP:
+
+"thread=main", Dates.main(), line=35 bci=51
+
+LOCAL VARIABLES:
+someMonth = 1
+someDay = 2
+laterMonth = 3
+laterDay = 4
+someDayInYear = 0
+laterDayInYear = 0
+aMonth = 0
+
+STEP:
+
+"thread=main", Dates.main(), line=34 bci=54
+
+LOCAL VARIABLES:
+someMonth = 1
+someDay = 2
+laterMonth = 3
+laterDay = 4
+someDayInYear = 31
+laterDayInYear = 0
+aMonth = 0
+
+STEP:
+
+"thread=main", Dates.main(), line=38 bci=63
+
+LOCAL VARIABLES:
+someMonth = 1
+someDay = 2
+laterMonth = 3
+laterDay = 4
+someDayInYear = 31
+laterDayInYear = 0
+aMonth = 1
+
+STEP:
+
+"thread=main", Dates.main(), line=39 bci=69
+
+LOCAL VARIABLES:
+someMonth = 1
+someDay = 2
+laterMonth = 3
+laterDay = 4
+someDayInYear = 31
+laterDayInYear = 0
+aMonth = 1
+
+STEP:
+
+"thread=main", Dates.daysInMonth(), line=13 bci=0
+
+VARIABLES:
+Method arguments:
+month = 1
+Local variables:-
+
+STEP:
+
+"thread=main", Dates.daysInMonth(), line=16 bci=27
+
+VARIABLES:
+Method arguments:
+month = 1
+Local variables:-
+
+STEP:
+
+"thread=main", Dates.main(), line=39 bci=76
+
+LOCAL VARIABLES:
+someMonth = 1
+someDay = 2
+laterMonth = 3
+laterDay = 4
+someDayInYear = 31
+laterDayInYear = 0
+aMonth = 1
+
+STEP:
+
+"thread=main", Dates.main(), line=38 bci=79
+
+LOCAL VARIABLES:
+someMonth = 1
+someDay = 2
+laterMonth = 3
+laterDay = 4
+someDayInYear = 31
+laterDayInYear = 31
+aMonth = 1
+
+STEP:
+
+"thread=main", Dates.main(), line=39 bci=69
+
+LOCAL VARIABLES:
+someMonth = 1
+someDay = 2
+laterMonth = 3
+laterDay = 4
+someDayInYear = 31
+laterDayInYear = 31
+aMonth = 2
+
+STEP:
+
+"thread=main", Dates.daysInMonth(), line=13 bci=0
+
+VARIABLES:
+Method arguments:
+month = 2
+Local variables:-
+
+STEP:
+
+"thread=main", Dates.daysInMonth(), line=16 bci=27
+
+VARIABLES:
+Method arguments:
+month = 2
+Local variables:-
+
+STEP:
+
+"thread=main", Dates.main(), line=39 bci=76
+
+LOCAL VARIABLES:
+someMonth = 1
+someDay = 2
+laterMonth = 3
+laterDay = 4
+someDayInYear = 31
+laterDayInYear = 31
+aMonth = 2
+
+STEP:
+
+"thread=main", Dates.main(), line=38 bci=79
+
+LOCAL VARIABLES:
+someMonth = 1
+someDay = 2
+laterMonth = 3
+laterDay = 4
+someDayInYear = 31
+laterDayInYear = 62
+aMonth = 2
+
+STEP:
+
+"thread=main", Dates.main(), line=43 bci=88
+
+LOCAL VARIABLES:
+Local variables:
+someMonth = 1
+someDay = 2
+laterMonth = 3
+laterDay = 4
+someDayInYear = 31
+laterDayInYear = 62
+aMonth = 3
+
+STEP:
+
+"thread=main", Dates.main(), line=44 bci=91
+
+LOCAL VARIABLES:
+someMonth = 1
+someDay = 2
+laterMonth = 3
+laterDay = 4
+someDayInYear = 31
+laterDayInYear = 62
+aMonth = 3
+daysBetween = 0
+
+OUTPUT: The difference in days between 1/2 and 3/4 is: 33
+
+STEP:
+
+thread=main", Dates.main(), line=47 bci=107someMonth = 1
+
+LOCAL VARIABLES:
+someDay = 2
+laterMonth = 3
+laterDay = 4
+someDayInYear = 31
+laterDayInYear = 62
+aMonth = 3
+daysBetween = 0
+
+SUMARY ALL LOCAL VARIABLES INSIDE MAIN:
+
+- someMonth (some month from input)
+- someDay (some day from input)
+- laterMonth (later month from input)
+- laterDay (later day from input)
+- someDayInYear (global number for some day out of 365 days in year)
+- laterDayInYear (global number for later day out of 365 days in year)
+- aMonth (some counter)
+- daysBetween (final result)
+
+## **3.3 Task 3: Other method**
+
+identifying the method's name using ‘methods Dates’:
+
+The method is called: daysInMonth(int)
+
+Identifying the location using ‘stop in Dates.daysInMonth’
+
+—> The other method is: daysInMonth(int) and it is located in line 13
+
+## **3.4 Task 4: Finding the bug(s?)**
+
+**In daysInMonths(int):**
+
+STEP:
+
+"thread=main", Dates.daysInMonth(), line=13 bci=0
+
+Method arguments:
+month = 0
+Local variables:-
+
+STEP:
+
+"thread=main", Dates.daysInMonth(), line=16 bci=27
+
+Method arguments:
+month = 0
+Local variables: -
+
+The method supposedly returns the number of days in a valid month (1 to 12).
+
+If month = 0, this implied that a wrong argument is passed to the method.
+
+Bug:
+
+The variable aMonth is initialised to 0 in the Dates.main() method:
+
+STEP:
+
+"thread=main", Dates.main(), line=35 bci=51
+
+LOCAL VARIABLES:
+someMonth = 1
+someDay = 2
+laterMonth = 3
+laterDay = 4
+someDayInYear = 0
+laterDayInYear = 0
+aMonth = 0
+
+This value is likely passed to the daysInMonth method. Because this is an invalid argument the result of daysInMonth is incorrect causing the program to produce wrong outputs.
+
+**In the main() method:**
+
+using next and locals: ( new input: Dates 12 31 1 1, to test both crossing of month and year)
+
+Breakpoint hit: "thread=main", Dates.main(), line=23 bci=0
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=24 bci=7
+
+VARIABELS:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=26 bci=14
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=27 bci=21
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=31 bci=29
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=32 bci=32
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+someDayInYear = 0
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=34 bci=35
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+someDayInYear = 0
+laterDayInYear = 0
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=35 bci=44
+
+VARIABLES:
+
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+someDayInYear = 0
+laterDayInYear = 0
+aMonth = 0
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=34 bci=54
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+someDayInYear = 31
+laterDayInYear = 0
+aMonth = 0
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=35 bci=44
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+someDayInYear = 31
+laterDayInYear = 0
+aMonth = 1
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=34 bci=54
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+someDayInYear = 62
+laterDayInYear = 0
+aMonth = 1
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=35 bci=44
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+someDayInYear = 62
+laterDayInYear = 0
+aMonth = 2
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=34 bci=54
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+someDayInYear = 93
+laterDayInYear = 0
+aMonth = 2
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=35 bci=44
+
+VARIABLES:
+
+Method arguments:
+
+args = instance of java.lang.String[4] (id=452)
+
+Local variables:
+
+someMonth = 12
+
+someDay = 31
+
+laterMonth = 1
+
+laterDay = 1
+
+someDayInYear = 93
+
+laterDayInYear = 0
+
+aMonth = 3
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=34 bci=54
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+someDayInYear = 124
+laterDayInYear = 0
+aMonth = 3
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=35 bci=44
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+someDayInYear = 124
+laterDayInYear = 0
+aMonth = 4
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=34 bci=54
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+someDayInYear = 155
+laterDayInYear = 0
+aMonth = 4
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=35 bci=44
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+someDayInYear = 155
+laterDayInYear = 0
+aMonth = 5
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=34 bci=54
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+someDayInYear = 186
+laterDayInYear = 0
+aMonth = 5
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=35 bci=44
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+someDayInYear = 186
+laterDayInYear = 0
+aMonth = 6
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=34 bci=54
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+someDayInYear = 216
+laterDayInYear = 0
+aMonth = 6
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=35 bci=44
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+someDayInYear = 216
+laterDayInYear = 0
+aMonth = 7
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=34 bci=54
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+someDayInYear = 246
+laterDayInYear = 0
+aMonth = 7
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=35 bci=44
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+someDayInYear = 246
+laterDayInYear = 0
+aMonth = 8
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=34 bci=54
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+someDayInYear = 277
+laterDayInYear = 0
+aMonth = 8
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=35 bci=44
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+someDayInYear = 277
+laterDayInYear = 0
+aMonth = 9
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=34 bci=54
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+someDayInYear = 307
+laterDayInYear = 0
+aMonth = 9
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=35 bci=44
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+someDayInYear = 307
+laterDayInYear = 0
+aMonth = 10
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=34 bci=54
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+someDayInYear = 338
+laterDayInYear = 0
+aMonth = 10
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=35 bci=44
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+someDayInYear = 338
+laterDayInYear = 0
+aMonth = 11
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=34 bci=54
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+someDayInYear = 368
+laterDayInYear = 0
+aMonth = 11
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=38 bci=63
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+someDayInYear = 368
+laterDayInYear = 0
+aMonth = 12
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=43 bci=88
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+someDayInYear = 368
+laterDayInYear = 0
+aMonth = 12
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=44 bci=91
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+someDayInYear = 368
+laterDayInYear = 0
+aMonth = 12
+daysBetween = 0
+
+NEXT:
+
+Step completed: "thread=main", Dates.main(), line=49 bci=123
+
+VARIABLES:
+
+Method arguments:
+args = instance of java.lang.String[4] (id=452)
+Local variables:
+someMonth = 12
+someDay = 31
+laterMonth = 1
+laterDay = 1
+someDayInYear = 368
+laterDayInYear = 0
+aMonth = 12
+daysBetween = -398
+
+—> WRONG OUTPUT: -398 EXPECTED: 1
+
+Overview of the Bugs:
+
+Bug #1: Invalid argument passed to daysInMonth(int)
+
+- Line number 35 in the main() method
+- aMonth = 0 (invalid) and passed to the daysInMonth(int) method resulting in a wrong output of the method
+
+Bug #2: Incorrect calculations for someDayInYear and laterDayInYear
+
+- Line number: multiple locations, related to aMonth usage in main() method
+- The variables someDayInYear and laterDayInYear seem to be initialised to 0 and then updated incrementally as the program steps through each month. These calculations seem to be affected by the daysInMonth method. Because the daysInMonth method is currently giving the wrong output due to aMonth = 0 this bug carries through and we get the wrong output.
+
+Bug #3: Negative Day Difference in the calculation
+
+- Line 49 (final daysBetween calculation)
+- The difference in days in calculated incorrectly (possibly in consequence of incorrect aMonth value)
+
+**3.5 Task 5: Reconstruct a correct `DatesImprove.java`**
+
+**3.6 Task 6: Create your test suite**
+
+**Basic cases:**
+
+1 1 1 2 Basic case: difference is 1 day within the same month
+
+Expected output: 1
+
+1 5 1 10 Basic case: difference is 5 days within the same month
+
+Expected output: 5
+
+**Across Moths:**
+
+1 31 2 1 January 31 —> February 1
+
+Expected output: 1
+
+4 15 5 10 April 15 —> May 10
+
+Expected output: 25
+
+**Across Years:**
+
+12 31 1 1 December 31 —> January 1
+
+Expected output: 1
+
+11 15 1 5 November 15 —> January 5
+
+Expected output: 51
+
+5 10 4 15 May 10 —> April 15
+
+Expected output: 340
