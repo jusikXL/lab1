@@ -14,6 +14,7 @@ public class IntersectTest {
 
     set1.insert(1);
     set1.insert(2);
+    set1.insert(3);
     set1.insert(5);
 
     set2.insert(1);
@@ -28,6 +29,10 @@ public class IntersectTest {
   public void testIntersect() {
     // more elements
     set1.intersect(set2); // statement 2, 3, 4, 5, 6
+    assertArrayEquals(new int[] { 1, 3 }, set1.toArray());
+
+    // less elements
+    set1.intersect(set3);
     assertArrayEquals(new int[] { 1 }, set1.toArray());
 
     // with empty set
@@ -37,8 +42,5 @@ public class IntersectTest {
     // empty set
     new Set().intersect(set1); // statement 1
     assertArrayEquals(new int[] {}, set1.toArray());
-
-    // less elements
-    set2.intersect(set3);
   }
 }
