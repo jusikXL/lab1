@@ -5,16 +5,16 @@
 Fixed solution:
 ```
 public void insert(int x) {
-      for (int i = 0; i < a.size(); i++) {
-           if (a.get(i) > x) {
-                a.add(i, x); // statement 1
-                return; // statement 2
-            } else {
-                 if (a.get(i) == x) {
-                return; // statement 3
-                }
+   for (int i = 0; i < a.size(); i++) {
+         if (a.get(i) > x) {
+            a.add(i, x); // statement 1
+            return; // statement 2
+         } else {
+            if (a.get(i) == x) {
+               return; // statement 3
             }
-      }
+         }
+   }
    a.add(x); // statement 4
 }
 ```
@@ -45,16 +45,16 @@ public void insert(int x) {
 
 ```
 public boolean member(int x) {
-     for (int i = 0; i < a.size(); i++) {
-          if (a.get(i) > x) {
-               return false; // statement 1
-          } else {
-                if (a.get(i) == x) {
-                return true; // statement 2
-                 }
-          }
+   for (int i = 0; i < a.size(); i++) {
+      if (a.get(i) > x) {
+            return false; // statement 1
+      } else {
+            if (a.get(i) == x) {
+               return true; // statement 2
+            }
       }
-     return false; // statement 3
+   }
+   return false; // statement 3
 }
 ```
 
@@ -87,23 +87,25 @@ public void intersect(Set s) {
 	if (a.size() == 0 || s.a.size() == 0) {
 		a = new ArrayList<Integer>(); // statement 1
 		return; // statement 1.1
-}
-ArrayList<Integer> intersection = new ArrayList<>(); // statement 2
+   }
+   
+   ArrayList<Integer> intersection = new ArrayList<>(); // statement 2
 
 for (int i = 0, j = 0; i < a.size() && j < s.a.size();) {
-  if (a.get(i).equals(s.a.get(j))) {
-    intersection.add(a.get(i)); // statement 3
-    i++; // statement 3.1
-    j++; // statement 3.2
-  } else if (a.get(i) < s.a.get(j)) {
-    i++; // statement 4
-  } else {
-    j++; // statement 5
-  }
+   if (a.get(i).equals(s.a.get(j))) {
+         intersection.add(a.get(i)); // statement 3
+         i++; // statement 3.1
+         j++; // statement 3.2
+   } else if (a.get(i) < s.a.get(j)) {
+         i++; // statement 4
+   } else {
+         j++; // statement 5
+   }
 }
 
 a = intersection; // statement 6
 }
+```
 
 **`testIntersect` stream:**
 
@@ -123,7 +125,7 @@ a = intersection; // statement 6
 
    —> Branch: go into first if because first set is empty, Statement 1,1.1
 
-**Bug:** The original code modifies the list `a` during iteration by removing elements, which can cause incorrect index shifting.
+**Bug:** The original code modifies the list during iteration by removing elements, which can cause incorrect index shifting.
 
 **Fix:** Replaced the in-place modification with a new list to store the intersection, avoiding index shifting problems.
 
@@ -131,22 +133,21 @@ a = intersection; // statement 6
 Fixed solution:
 ```
 public boolean distinctClosed(IntBinaryOperator f) {
-    int vi, vj; // statement 1
-    for (int i = 0; i < a.size(); i++) {
+   int vi, vj; // statement 1
+   for (int i = 0; i < a.size(); i++) {
       for (int j = i + 1 /* consider only distinct pairs */; j < a.size(); j++) {
-        vi = a.get(i); // statement 2
-        vj = a.get(j); // statement 3
-        if (!(member(f.applyAsInt(vi, vj)))) {
-          return false; // statement 4
-        }
+         vi = a.get(i); // statement 2
+         vj = a.get(j); // statement 3
+         if (!(member(f.applyAsInt(vi, vj)))) {
+            return false; // statement 4
+         }
       }
-    }
-    return true; // statement 5
-  }
-
+   }
+   return true; // statement 5
+}
 ```
 
-**`distinctClosed` test add:**
+**`distinctClosed` test add %5 stream:**
 
 1. Test with an empty set.
 
@@ -164,7 +165,7 @@ public boolean distinctClosed(IntBinaryOperator f) {
 
    —> Branch: going into the i and j for loops and if-statement, Statement 1, 2, 3, 4
 
-**`distinctClosed` test subtract:**
+**`distinctClosed` test substract %5 stream:**
 
 1. Test with an empty set.
 
